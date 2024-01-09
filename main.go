@@ -38,8 +38,8 @@ func main() {
 	}
 
 	for i := 0; i < len(people); i++ {
-		//NOTE: step 3. await. blocking operation임 채널로부터 한 메시지를 받을 동안 await. go runtime이 멈춤.
-		//다만 병렬적으로 도니까 2초 뒤에 다 주루룩 나옴 ㅎㅎ
+		//NOTE: step 3. await. blocking operation임 채널로부터 한 메시지를 받을 동안 await. 메인(go runtime)이 멈춰 기다림.
+		//다만 병렬적으로 도니까 2초 뒤에 다 주루룩 나옴 ㅎㅎ. Concurrency로 인해 누가 먼저 튀어나오는 지는 모름
 		fmt.Println(<-c)
 	}
 
