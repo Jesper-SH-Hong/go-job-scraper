@@ -26,7 +26,7 @@ func main() {
 	//NOTE: 어떤 종류의 자료를 주고받을 것인가 string
 	c := make(chan string)
 
-	people := [2]string{"jesper", "flynn"}
+	people := [5]string{"jesper", "flynn", "pan", "juan", "kim"}
 
 	//TODO: 2개의 고루틴 생성
 	for _, person := range people {
@@ -37,13 +37,21 @@ func main() {
 		go isGood(person, c)
 	}
 
-	//NOTE: await. blocking operation임 채널로부터 한 메시지를 받을 동안 await. go runtime이 멈춤.
-	result := <-c //isGood이 보내준 걸 consume. receive from channel a.k.a. c
+	for i := 0; i < len(people); i++ {
+		//NOTE: step 3. await. blocking operation임 채널로부터 한 메시지를 받을 동안 await. go runtime이 멈춤.
+		//다만 병렬적으로 도니까 2초 뒤에 다 주루룩 나옴 ㅎㅎ
+		fmt.Println(<-c)
+	}
 
 
-	fmt.Println(result)
-	fmt.Println(<-c) //남은 한 고루틴 메시지 받기. 둘 다 거의 동시에 끝남.
-	// fmt.Println(<-c) //all gourintes are asleep - deadlock ERROR. 고루틴 2개 돌렸음.. 받을 게 없는데 대기.. 안 끝남. 고로 에러 내줌
+	//걍 위 방식대로 하셈. 아래는 기존 코드 참고.
+	// //NOTE: await. blocking operation임 채널로부터 한 메시지를 받을 동안 await. go runtime이 멈춤.
+	// result := <-c //isGood이 보내준 걸 consume. receive from channel a.k.a. c
+
+
+	// fmt.Println(result)
+	// fmt.Println(<-c) //남은 한 고루틴 메시지 받기. 둘 다 거의 동시에 끝남.
+	// // fmt.Println(<-c) //all gourintes are asleep - deadlock ERROR. 고루틴 2개 돌렸음.. 받을 게 없는데 대기.. 안 끝남. 고로 에러 내줌. 그러니 그냥 저렇게 고루틴 갯수만큼 도는 for loop에 넣자.
 	
 
 }
