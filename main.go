@@ -34,8 +34,10 @@ func main() {
 		go isGood(person, c)
 	}
 
-	//NOTE: await. 채널로부터 한 메시지를 받을 동안 await. go runtime이 멈춤.
+	//NOTE: await. blocking operation임 채널로부터 한 메시지를 받을 동안 await. go runtime이 멈춤.
 	result := <-c //isGood이 보내준 걸 consume. receive from channel a.k.a. c
+
+
 	fmt.Println(result)
 	fmt.Println(<-c) //남은 한 고루틴 메시지 받기. 둘 다 거의 동시에 끝남.
 	// fmt.Println(<-c) //all gourintes are asleep - deadlock ERROR. 고루틴 2개 돌렸음..
